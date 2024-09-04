@@ -1,0 +1,9 @@
+pandasai[connectors]
+streamlit
+pandas
+sqlalchemy
+openai
+os
+json
+hashlib
+dotenv
