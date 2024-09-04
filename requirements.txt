@@ -1,6 +1,6 @@
 pandasai[connectors]
-streamlit
-pandas
+pandas==2.0.3
+numpy==1.25.2
 sqlalchemy
 openai
 python-dotenv
