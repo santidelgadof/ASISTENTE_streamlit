@@ -1,20 +1,27 @@
 import streamlit as st
 import pandas as pd
 import os
+from io import BytesIO
+import base64
 from data_loader import load_topics, save_topic, delete_topic
 from query_executor import enhanced_query_smart_dataframe
 from config import get_db_engine
 
-# Cargar los datos de usuarios y contraseñas desde el archivo Excel
-user_data = pd.read_excel('DOC/database.xlsx', sheet_name='Users')
+# Obtener el archivo codificado en base64 desde st.secrets
+encoded_excel = st.secrets["passwords_excel"]
+
+# Decodificar el archivo y leerlo como un DataFrame de pandas
+decoded_excel = base64.b64decode(encoded_excel)
+df = pd.read_excel(BytesIO(decoded_excel))
 
 # Función para autenticar usuario
-def authenticate_user(email, password, user_data):
-    user = user_data[(user_data['email'] == email) & (user_data['contraseña'] == password)]
+def authenticate_user(email, password, df):
+    # Buscar en el DataFrame el usuario y contraseña
+    user = df[(df['email'] == email) & (df['contraseña'] == password)]
     if not user.empty:
-        return user.iloc[0]
+        return True
     else:
-        return None
+        return False
 
 # Crear la carpeta para guardar datos de usuario si no existe
 if not os.path.exists('user_data'):
@@ -31,7 +38,7 @@ if not st.session_state['authenticated']:
     password = st.text_input("Contraseña", type="password")
 
     if st.button("Login"):
-        user = authenticate_user(email, password, user_data)
+        user = authenticate_user(email, password, df)
         if user is not None:
             st.session_state['authenticated'] = True
             st.session_state['user'] = user
