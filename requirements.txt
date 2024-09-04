@@ -1,9 +1,10 @@
-pandasai[connectors]
+streamlit
+pandasai
 pip==24.2
 setuptools
 wheel
 numpy==1.26.0
-pandas==1.5.3
+pandas
 pyyaml
 sqlalchemy==1.4.53
 openai==0.28.0
