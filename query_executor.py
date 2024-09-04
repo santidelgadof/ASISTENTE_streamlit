@@ -1,11 +1,12 @@
 from pandasai import SmartDataframe
 from pandasai.llm.openai import OpenAI
-import os
 import streamlit as st
 from pandasai.responses.response_parser import ResponseParser
 
-# Inicializar PandasAI con OpenAI (u otro LLM si tienes uno local)
-llm = OpenAI(api_token=os.getenv("OPENAI_API_KEY"))
+
+# Inicializar PandasAI con OpenAI usando la API key desde st.secrets
+llm = OpenAI(api_token=st.secrets["OPENAI_API_KEY"])
+
 
 class StreamlitResponse(ResponseParser):
     def __init__(self, context) -> None:
