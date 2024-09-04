@@ -3,7 +3,4 @@ streamlit
 pandas
 sqlalchemy
 openai
-os
-json
-hashlib
-dotenv
+python-dotenv
