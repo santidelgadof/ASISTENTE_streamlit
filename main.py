@@ -17,7 +17,7 @@ df = pd.read_excel(BytesIO(decoded_excel))
 
 # Función para autenticar usuario
 def authenticate_user(email, password, df):
-    # Buscar en el DataFrame el usuario y contraseña
+    # Buscar en el DataFrame el usuario y su contraseña hasheada
     hashed_password, _ = hash_password(password)
     user = df[(df['email'] == email) & (df['contraseña'] == hashed_password)]
 
@@ -25,6 +25,7 @@ def authenticate_user(email, password, df):
         return True
     else:
         return False
+
 
 # Crear la carpeta para guardar datos de usuario si no existe
 if not os.path.exists('user_data'):

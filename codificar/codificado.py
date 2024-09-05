@@ -1,7 +1,7 @@
 import base64
 
 # Abre el archivo Excel que contiene las contraseñas
-with open("DOC/database.xlsx", "rb") as f:
+with open("DOC/database_hash.xlsx", "rb") as f:
     # Codifica el archivo en base64
     encoded_excel = base64.b64encode(f.read()).decode("utf-8")
 
