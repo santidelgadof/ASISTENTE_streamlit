@@ -6,6 +6,7 @@ import base64
 from data_loader import load_topics, save_topic, delete_topic
 from query_executor import enhanced_query_smart_dataframe
 from config import get_db_engine
+from auth import hash_password
 
 # Obtener el archivo codificado en base64 desde st.secrets
 encoded_excel = st.secrets["passwords_excel"]
@@ -17,7 +18,9 @@ df = pd.read_excel(BytesIO(decoded_excel))
 # Función para autenticar usuario
 def authenticate_user(email, password, df):
     # Buscar en el DataFrame el usuario y contraseña
-    user = df[(df['email'] == email) & (df['contraseña'] == password)]
+    hashed_password, _ = hash_password(password)
+    user = df[(df['email'] == email) & (df['contraseña'] == hashed_password)]
+
     if not user.empty:
         return True
     else:
