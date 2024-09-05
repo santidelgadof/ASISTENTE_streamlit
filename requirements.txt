@@ -9,3 +9,4 @@ streamlit
 openai
 pandasai
 python-dotenv
+pymysql
