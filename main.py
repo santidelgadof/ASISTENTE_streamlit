@@ -15,16 +15,15 @@ encoded_excel = st.secrets["passwords_excel"]
 decoded_excel = base64.b64decode(encoded_excel)
 df = pd.read_excel(BytesIO(decoded_excel))
 
-# Función para autenticar usuario
-def authenticate_user(email, password, df):
-    # Buscar en el DataFrame el usuario y su contraseña hasheada
-    hashed_password, _ = hash_password(password)
-    user = df[(df['email'] == email) & (df['hashed_password'] == hashed_password)]
-
+# Función para autenticar usuarios utilizando el hash y la sal
+def authenticate_user(email, password, user_data):
+    user = user_data[user_data['email'] == email]
     if not user.empty:
-        return True
-    else:
-        return False
+        stored_salt = user.iloc[0]['salt']  # Recuperar la sal almacenada
+        hashed_password, _ = hash_password(password, salt=stored_salt)
+        if hashed_password == user.iloc[0]['hashed_password']:  # Verificar hash
+            return user.iloc[0]
+    return None
 
 
 # Crear la carpeta para guardar datos de usuario si no existe
