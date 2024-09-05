@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from io import BytesIO
 import base64
+from sqlalchemy import text
 from data_loader import load_topics, save_topic, delete_topic
 from query_executor import enhanced_query_smart_dataframe
 from config import get_db_engine
@@ -115,11 +116,14 @@ else:
                 # Ejecutar la consulta SQL del tema guardado
                 sql_query = topics[tema]['sql_query']
                 if "sql_df" not in st.session_state or st.session_state.get('last_sql_query') != sql_query:
+                    # Código dentro del botón "Cargar Datos"
                     if st.button("Cargar Datos"):
                         try:
                             with st.spinner("Ejecutando consulta SQL del tema..."):
                                 engine = get_db_engine()
-                                df = pd.read_sql(sql_query, engine)
+                                with engine.connect() as connection:  # Crear una conexión
+                                    result_set = connection.execute(text(sql_query))  # Usar `text()` para consultas SQL
+                                    df = pd.DataFrame(result_set.fetchall(), columns=result_set.keys())  # Convertir el resultado en un DataFrame
 
                                 if df.empty:
                                     st.warning("La consulta no devolvió resultados.")
