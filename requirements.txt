@@ -1,11 +1,9 @@
-streamlit
-pandasai
 pip==24.2
 setuptools
 wheel
 numpy==1.26.0
-pandas
-pyyaml
-sqlalchemy==1.4.53
-openai==0.28.0
-python-dotenv==1.0.1
+pandas==1.5.3
+streamlit
+openai
+pandasai
+python-dotenv
