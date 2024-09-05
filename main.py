@@ -19,7 +19,7 @@ df = pd.read_excel(BytesIO(decoded_excel))
 def authenticate_user(email, password, df):
     # Buscar en el DataFrame el usuario y su contraseña hasheada
     hashed_password, _ = hash_password(password)
-    user = df[(df['email'] == email) & (df['contraseña'] == hashed_password)]
+    user = df[(df['email'] == email) & (df['hashed_password'] == hashed_password)]
 
     if not user.empty:
         return True
